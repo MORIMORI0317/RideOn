@@ -1,6 +1,6 @@
 package com.morimori.rideon;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,7 +29,7 @@ public class RideOn {
 
 	@SubscribeEvent
 	public void onClick(PlayerInteractEvent.EntityInteract e) {
-		EntityPlayer pl = e.getEntityPlayer();
+		PlayerEntity pl = e.getPlayer();
 
 		if (pl.world.isRemote) {
 			if (KeyEvent.RideOnE && !pl.isSneaking())

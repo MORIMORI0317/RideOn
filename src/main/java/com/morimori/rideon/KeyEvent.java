@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -23,12 +23,12 @@ public class KeyEvent {
 
 			if (RideOnE) {
 				RideOnE = false;
-				Minecraft.getInstance().player.sendStatusMessage(new TextComponentTranslation(
+				Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent(
 						"messege.rideon.switching", I18n.format("messege.rideon.invalid")), true);
 			} else {
 				RideOnE = true;
 
-				Minecraft.getInstance().player.sendStatusMessage(new TextComponentTranslation(
+				Minecraft.getInstance().player.sendStatusMessage(new TranslationTextComponent(
 						"messege.rideon.switching", I18n.format("messege.rideon.enabled")), true);
 			}
 
