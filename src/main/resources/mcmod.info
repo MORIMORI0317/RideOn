@@ -1,0 +1,16 @@
+[
+{
+  "modid": "rideon",
+  "name": "Ride On",
+  "description": "The Ride On MOD",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["MORIMORI0317"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
