@@ -1,7 +1,7 @@
 package com.morimori.rideon;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class MessageRideOn implements IMessage {
 	public int entity;
