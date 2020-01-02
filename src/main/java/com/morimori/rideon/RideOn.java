@@ -32,7 +32,7 @@ public class RideOn {
 		PlayerEntity pl = e.getPlayer();
 
 		if (pl.world.isRemote) {
-			if (KeyEvent.RideOnE && !pl.isSneaking())
+			if (KeyEvent.RideOnE && !pl.isCrouching())
 				PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId()));
 		}
 	}
