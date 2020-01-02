@@ -1,45 +1,37 @@
 package com.morimori.rideon;
 
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class KeyEvent {
-	public static KeyBinding RideOn = new KeyBinding("key.rideon", Keyboard.KEY_O, "key.categories.movement");
 	public static boolean RideOnE;
-	public static Minecraft Mc = Minecraft.getMinecraft();
+	public static KeyBinding RideOn = new KeyBinding("key.rideon", GLFW.GLFW_KEY_O, "key.categories.movement");
 
 	@SubscribeEvent
-	public void onKeyInput(InputEvent.KeyInputEvent e) {
+	@OnlyIn(Dist.CLIENT)
+	public void onKeyInput(KeyInputEvent e) {
 
 		if (RideOn.isPressed()) {
-			if (MCVersionChecker.isMoreVersion("1.11")) {
-				if (RideOnE) {
-					RideOnE = false;
-					Mc.player.sendStatusMessage(new TextComponentTranslation(
-							"messege.rideon.switching", I18n.format("messege.rideon.invalid")), true);
-				} else {
-					RideOnE = true;
 
-					Mc.player.sendStatusMessage(new TextComponentTranslation(
-							"messege.rideon.switching", I18n.format("messege.rideon.enabled")), true);
-				}
+			if (RideOnE) {
+				RideOnE = false;
+				Minecraft.getInstance().player.sendStatusMessage(new TextComponentTranslation(
+						"messege.rideon.switching", I18n.format("messege.rideon.invalid")), true);
 			} else {
-				if (RideOnE) {
-					RideOnE = false;
-					Mc.player.sendMessage(new TextComponentTranslation(
-							"messege.rideon.switching", I18n.format("messege.rideon.invalid")));
-				} else {
-					RideOnE = true;
-					Mc.player.sendMessage(new TextComponentTranslation(
-							"messege.rideon.switching", I18n.format("messege.rideon.enabled")));
-				}
+				RideOnE = true;
+
+				Minecraft.getInstance().player.sendStatusMessage(new TextComponentTranslation(
+						"messege.rideon.switching", I18n.format("messege.rideon.enabled")), true);
 			}
+
 		}
 	}
 

@@ -3,39 +3,38 @@ package com.morimori.rideon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(modid = RideOn.MODID, version = RideOn.VERSION, acceptedMinecraftVersions = "[1.9,1.12.2]")
+@Mod(RideOn.MODID)
 public class RideOn {
+
 	public static final String MODID = "rideon";
 	public static final String VERSION = "1.0";
+	public static final IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(),
+			() -> () -> new ServerProxy());
 
-	@SidedProxy(clientSide = "com.morimori.rideon.ClientProxy", serverSide = "com.morimori.rideon.CommonProxy")
-	public static CommonProxy Proxy;
-
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent e) {
+	public RideOn() {
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent e) {
+	private void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.init();
-		Proxy.initBindind();
-
+		proxy.initBindind();
 	}
 
 	@SubscribeEvent
 	public void onClick(PlayerInteractEvent.EntityInteract e) {
 		EntityPlayer pl = e.getEntityPlayer();
+
 		if (pl.world.isRemote) {
-			if (!pl.isSneaking() && KeyEvent.RideOnE)
+			if (KeyEvent.RideOnE && !pl.isSneaking())
 				PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId()));
 		}
 	}
+
 }

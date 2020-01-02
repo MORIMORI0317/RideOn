@@ -1,7 +1,10 @@
 package com.morimori.rideon;
 
-public class CommonProxy implements IProxy {
+public class ServerProxy implements IProxy {
+
+	@Override
 	public void initBindind() {
 
 	}
+
 }

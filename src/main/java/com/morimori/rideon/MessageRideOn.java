@@ -1,27 +1,29 @@
 package com.morimori.rideon;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.network.PacketBuffer;
 
-public class MessageRideOn implements IMessage {
+public class MessageRideOn {
 	public int entity;
-
-	public MessageRideOn() {
-	}
 
 	public MessageRideOn(int entityIn) {
 		this.entity = entityIn;
-
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		this.entity = buf.readInt();
+	public int read(PacketBuffer buffer) {
+		return entity;
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
-		buf.writeInt(this.entity);
+	public static void write(MessageRideOn message, PacketBuffer buffer) {
+		buffer.writeInt(message.entity);
 	}
 
+	public static void encodeMessege(MessageRideOn messegeIn, PacketBuffer buffer) {
+		buffer.writeInt(messegeIn.read(buffer));
+		write(messegeIn, buffer);
+	}
+
+	public static MessageRideOn decodeMessege(PacketBuffer buffer) {
+
+		return new MessageRideOn(buffer.readInt());
+	}
 }
