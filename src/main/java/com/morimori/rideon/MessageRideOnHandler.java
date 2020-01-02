@@ -10,9 +10,9 @@ public class MessageRideOnHandler implements IMessageHandler<MessageRideOn, IMes
 
 	@Override
 	public IMessage onMessage(MessageRideOn message, MessageContext ctx) {
-		EntityPlayer entityPlayer = ctx.getServerHandler().playerEntity;
-		Entity en = entityPlayer.worldObj.getEntityByID(message.entity);
-		entityPlayer.mountEntity(en);
+		EntityPlayer entityPlayer = ctx.getServerHandler().player;
+		Entity en = entityPlayer.world.getEntityByID(message.entity);
+		entityPlayer.startRiding(en);
 		return null;
 	}
 
