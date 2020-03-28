@@ -1,4 +1,4 @@
-package com.morimori.rideon;
+package net.morimori.rideon;
 
 import java.util.regex.Pattern;
 

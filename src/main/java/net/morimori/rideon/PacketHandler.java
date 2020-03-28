@@ -1,4 +1,4 @@
-package com.morimori.rideon;
+package net.morimori.rideon;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -10,5 +10,7 @@ public class PacketHandler {
 	public static void init() {
 
 		INSTANCE.registerMessage(MessageRideOnHandler.class, MessageRideOn.class, 0, Side.SERVER);
+		INSTANCE.registerMessage(MessageClientRideOnHandler.class, MessageClientRideOn.class, 1, Side.CLIENT);
+
 	}
 }

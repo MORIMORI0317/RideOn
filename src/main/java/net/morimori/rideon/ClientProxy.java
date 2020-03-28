@@ -1,4 +1,4 @@
-package com.morimori.rideon;
+package net.morimori.rideon;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
