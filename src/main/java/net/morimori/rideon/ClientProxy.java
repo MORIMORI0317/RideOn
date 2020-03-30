@@ -1,4 +1,4 @@
-package com.morimori.rideon;
+package net.morimori.rideon;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
