@@ -1,4 +1,4 @@
-package com.morimori.rideon;
+package net.morimori.rideon;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class RideOn {
 
 	public static final String MODID = "rideon";
-	public static final String VERSION = "1.1";
+	public static final String VERSION = "1.2";
 	public static final IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(),
 			() -> () -> new ServerProxy());
 
@@ -32,8 +32,8 @@ public class RideOn {
 		PlayerEntity pl = e.getPlayer();
 
 		if (pl.world.isRemote) {
-			if (KeyEvent.RideOnE && !pl.isCrouching())
-				PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId()));
+			if (KeyEvent.RideOnE && !pl.isSneaking())
+				PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId(), 1));
 		}
 	}
 
