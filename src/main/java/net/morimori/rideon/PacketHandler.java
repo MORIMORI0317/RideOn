@@ -1,4 +1,4 @@
-package com.morimori.rideon;
+package net.morimori.rideon;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
