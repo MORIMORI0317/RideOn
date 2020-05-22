@@ -1,5 +1,7 @@
 package net.morimori.rideon;
 
+import java.util.Arrays;
+
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -8,9 +10,11 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
+
 public class KeyEvent {
 	public static KeyBinding RideOn = new KeyBinding("key.rideon", Keyboard.KEY_O, "key.categories.movement");
 	public static boolean RideOnE;
@@ -35,8 +39,23 @@ public class KeyEvent {
 	public void onClientTick(TickEvent.ClientTickEvent e) {
 		EntityPlayer pl = Mc.thePlayer;
 
-		if (pl == null)
+		if (pl == null || !Config.cancontorol)
 			return;
+
+		try {
+
+			if (Config.contorolfiltermode.equals("whitelist")) {
+				if (!Arrays.asList(Config.contorolfilterlist).contains(EntityList.getEntityString(pl.ridingEntity))) {
+					return;
+				}
+			} else {
+				if (Arrays.asList(Config.contorolfilterlist).contains(EntityList.getEntityString(pl.ridingEntity))) {
+					return;
+				}
+			}
+
+		} catch (Exception e2) {
+		}
 
 		if (Mc.gameSettings.keyBindJump.getIsKeyPressed()) {
 

@@ -1,9 +1,12 @@
 package net.morimori.rideon;
 
+import java.util.Arrays;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.Vec3;
@@ -14,12 +17,33 @@ public class MessageRideOnHandler implements IMessageHandler<MessageRideOn, IMes
 	public IMessage onMessage(MessageRideOn message, MessageContext ctx) {
 		EntityPlayerMP pl = ctx.getServerHandler().playerEntity;
 		Entity en = pl.worldObj.getEntityByID(message.entity);
-		int state = message.state;
-		if (state == 1)
-			pl.mountEntity(en);
 
-		if (!(en instanceof EntityLiving))
+		int state = message.state;
+
+		if (state == 1) {
+			if (Config.ridefiltermode.equals("whitelist")) {
+				if (Arrays.asList(Config.ridefilterlist).contains(EntityList.getEntityString(en))) {
+					pl.mountEntity(en);
+				}
+			} else {
+				if (!Arrays.asList(Config.ridefilterlist).contains(EntityList.getEntityString(en))) {
+					pl.mountEntity(en);
+				}
+			}
+		}
+
+		if (!(en instanceof EntityLiving) || !Config.cancontorol)
 			return null;
+
+		if (Config.contorolfiltermode.equals("whitelist")) {
+			if (!Arrays.asList(Config.contorolfilterlist).contains(EntityList.getEntityString(en))) {
+				return null;
+			}
+		} else {
+			if (Arrays.asList(Config.contorolfilterlist).contains(EntityList.getEntityString(en))) {
+				return null;
+			}
+		}
 
 		EntityLiving li = (EntityLiving) en;
 
