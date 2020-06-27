@@ -12,29 +12,30 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(RideOn.MODID)
 public class RideOn {
 
-	public static final String MODID = "rideon";
-	public static final String VERSION = "1.2";
-	public static final IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(),
-			() -> () -> new ServerProxy());
+    public static final String MODID = "rideon";
+    public static final IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(),
+            () -> () -> new ServerProxy());
 
-	public RideOn() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+    public RideOn() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        MinecraftForge.EVENT_BUS.register(this);
+        CommonConfig.init();
+    }
 
-	private void setup(final FMLCommonSetupEvent event) {
-		PacketHandler.init();
-		proxy.initBindind();
-	}
+    private void setup(final FMLCommonSetupEvent event) {
+        PacketHandler.init();
+        proxy.initBindind();
 
-	@SubscribeEvent
-	public void onClick(PlayerInteractEvent.EntityInteract e) {
-		PlayerEntity pl = e.getPlayer();
+    }
 
-		if (pl.world.isRemote) {
-			if (KeyEvent.RideOnE && !pl.isCrouching())
-				PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId(), 1));
-		}
-	}
+    @SubscribeEvent
+    public void onClick(PlayerInteractEvent.EntityInteract e) {
+        PlayerEntity pl = e.getPlayer();
+
+        if (pl.world.isRemote) {
+            if (KeyEvent.RideOnE && !pl.isCrouching())
+                PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId(), 1));
+        }
+    }
 
 }

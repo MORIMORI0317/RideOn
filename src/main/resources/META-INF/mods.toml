@@ -1,28 +1,10 @@
-modLoader="javafml" 
-
-loaderVersion="[25,)" 
-
-issueTrackerURL="http://my.issue.tracker/"
-
-[[mods]] 
-
-modId="rideon" 
-
-version="1.2" 
-
-displayName="RideOn" 
-
-updateJSONURL="http://myurl.me/" 
-
-displayURL="" 
-
-logoFile="" 
-
-credits=""
-
+modLoader="javafml"
+loaderVersion="[32,)" 
+logoFile="logo.png" 
+[[mods]]
+modId="rideon"
+version="${file.jarVersion}" 
+displayName="Ride On"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/rideon" 
 authors="MORIMORI0317" 
-
-description='''
-Thank you for downloading!
-
-'''
+description="Thank you for downloading!"
