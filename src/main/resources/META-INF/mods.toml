@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[32,)" 
-logoFile="logo.png" 
+loaderVersion="[34,)" 
+issueTrackerURL="https://github.com/MORIMORI0317/RideOn/issues"
+license="LGPL v3"
 [[mods]]
 modId="rideon"
 version="${file.jarVersion}" 

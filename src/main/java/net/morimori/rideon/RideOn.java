@@ -1,41 +1,34 @@
 package net.morimori.rideon;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.lwjgl.glfw.GLFW;
 
 @Mod(RideOn.MODID)
 public class RideOn {
 
+    public static final KeyBinding rideOnToggle = new KeyBinding("key.rideon", GLFW.GLFW_KEY_O, "key.categories.movement");
     public static final String MODID = "rideon";
-    public static final IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(),
-            () -> () -> new ServerProxy());
 
     public RideOn() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        MinecraftForge.EVENT_BUS.register(this);
-        CommonConfig.init();
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        Config.init();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
-        proxy.initBindind();
-
+        MinecraftForge.EVENT_BUS.register(ServerHandler.class);
     }
 
-    @SubscribeEvent
-    public void onClick(PlayerInteractEvent.EntityInteract e) {
-        PlayerEntity pl = e.getPlayer();
-
-        if (pl.world.isRemote) {
-            if (KeyEvent.RideOnE && !pl.isCrouching())
-                PacketHandler.INSTANCE.sendToServer(new MessageRideOn(e.getTarget().getEntityId(), 1));
-        }
+    private void doClientStuff(final FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(ClientHandler.class);
+        ClientRegistry.registerKeyBinding(rideOnToggle);
     }
 
 }
