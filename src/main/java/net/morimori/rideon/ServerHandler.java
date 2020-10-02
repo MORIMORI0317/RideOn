@@ -1,5 +1,8 @@
 package net.morimori.rideon;
 
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResultType;
@@ -50,5 +53,17 @@ public class ServerHandler {
             ServerPlayerEntity player = ms.getPlayerList().getPlayerByUsername(name);
             PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new RideOnSyncMessage(isRideOnActive(player)));
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent e) {
+
+        if (e.player.getRidingEntity() != null && e.player.getRidingEntity() instanceof LivingEntity) {
+            LivingEntity entity = (LivingEntity) e.player.getRidingEntity();
+
+
+            // EntityUtil.jump(entity);
+        }
+
     }
 }

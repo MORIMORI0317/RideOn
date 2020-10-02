@@ -1,5 +1,6 @@
 package net.morimori.rideon;
 
+
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;

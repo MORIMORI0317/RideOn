@@ -1,6 +1,7 @@
 package net.morimori.rideon;
 
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
