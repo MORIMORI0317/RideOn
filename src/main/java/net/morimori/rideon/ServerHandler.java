@@ -2,7 +2,6 @@ package net.morimori.rideon;
 
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResultType;
@@ -57,13 +56,15 @@ public class ServerHandler {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent e) {
-
         if (e.player.getRidingEntity() != null && e.player.getRidingEntity() instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) e.player.getRidingEntity();
-
-
-            // EntityUtil.jump(entity);
+            if (e.player.world.isRemote) {
+                if (((ClientPlayerEntity) e.player).movementInput.jump)
+                    PacketHandler.INSTANCE.sendToServer(new RideOnKeyMessage(RideOnKeyMessage.KeyTyapes.JUMP));
+            } else {
+                EntityUtil.move(entity, e.player.getMotion());
+                EntityUtil.facing(entity, e.player.getRotationYawHead(), e.player.rotationPitch);
+            }
         }
-
     }
 }
