@@ -16,7 +16,9 @@ public class RideOnKeyMessageHandler {
             player.sendStatusMessage(new TranslationTextComponent("messege.rideon.switching", new TranslationTextComponent(!isActive ? "messege.rideon.enabled" : "messege.rideon.invalid")), true);
         } else if (message.keyTyape == RideOnKeyMessage.KeyTyapes.JUMP) {
             if (player.getRidingEntity() != null && player.getRidingEntity() instanceof LivingEntity)
-                EntityUtil.jump((LivingEntity) player.getRidingEntity());
+                if (Config.CanControl.get()) {
+                    EntityUtil.jump((LivingEntity) player.getRidingEntity());
+                }
         }
     }
 }

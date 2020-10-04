@@ -2,6 +2,8 @@ package net.morimori.rideon;
 
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResultType;
@@ -32,7 +34,25 @@ public class ServerHandler {
     @SubscribeEvent
     public static void onClick(PlayerInteractEvent.EntityInteract e) {
         if (!e.getPlayer().world.isRemote) {
-            if (isRideOnActive((ServerPlayerEntity) e.getPlayer())) {
+            boolean flag1 = Config.CanNoMOBRide.get();
+            boolean flag2 = e.getTarget() instanceof MobEntity;
+            boolean flag3 = !Config.RideOnBlackList.get().contains(e.getTarget().getType().getRegistryName().toString());
+
+            boolean flag4 = Config.RideOnWhiteList.get().isEmpty();
+            boolean flag5 = Config.RideOnWhiteList.get().contains(e.getTarget().getType().getRegistryName().toString());
+
+            boolean flag6 = !Config.CanNoBossRide.get() || e.getTarget().isNonBoss();
+            boolean flag7 = !Config.CanNoDragonRide.get() || !(e.getTarget() instanceof EnderDragonEntity);
+
+            boolean flag8 = true;
+            boolean flag9 = true;
+
+            if (e.getTarget() instanceof LivingEntity) {
+                flag8 = !(Config.maxHP.get() <= ((LivingEntity) e.getTarget()).getHealth());
+                flag9 = !(Config.minHP.get() >= ((LivingEntity) e.getTarget()).getHealth());
+            }
+
+            if (flag9 && flag8 && flag7 && flag6 && (flag4 || flag5) && flag3 && (flag1 || flag2) && isRideOnActive((ServerPlayerEntity) e.getPlayer())) {
                 e.setCanceled(true);
                 e.getPlayer().startRiding(e.getTarget());
                 e.setCancellationResult(ActionResultType.func_233537_a_(e.getPlayer().world.isRemote));
@@ -62,8 +82,23 @@ public class ServerHandler {
                 if (((ClientPlayerEntity) e.player).movementInput.jump)
                     PacketHandler.INSTANCE.sendToServer(new RideOnKeyMessage(RideOnKeyMessage.KeyTyapes.JUMP));
             } else {
-                EntityUtil.move(entity, e.player.getMotion());
-                EntityUtil.facing(entity, e.player.getRotationYawHead(), e.player.rotationPitch);
+                boolean flag1 = !Config.RideControlBlackList.get().contains(entity.getType().getRegistryName().toString());
+                boolean flag2 = Config.RideControlWhiteList.get().isEmpty();
+                boolean flag3 = Config.RideControlWhiteList.get().contains(entity.getType().getRegistryName().toString());
+
+
+                if ((flag2 || flag3) && flag1 && Config.CanControl.get()) {
+                    EntityUtil.move(entity, e.player.getMotion());
+                    EntityUtil.facing(entity, e.player.getRotationYawHead(), e.player.rotationPitch);
+                }
+
+                boolean flage1 = Config.GetOffIfDead.get() && !entity.isAlive();
+                boolean flage2 = Config.maxHP.get() <= entity.getHealth();
+                boolean flage3 = Config.minHP.get() >= entity.getHealth();
+
+                if (flage1 || flage2 || flage3)
+                    e.player.stopRiding();
+
             }
         }
     }
