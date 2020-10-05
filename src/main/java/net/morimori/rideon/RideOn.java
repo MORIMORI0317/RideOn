@@ -13,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 @Mod(RideOn.MODID)
 public class RideOn {
 
-    public static final KeyBinding rideOnToggle = new KeyBinding("key.rideon", GLFW.GLFW_KEY_O, "key.categories.movement");
+
     public static final String MODID = "rideon";
 
     public RideOn() {
@@ -29,7 +29,7 @@ public class RideOn {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(ClientHandler.class);
-        ClientRegistry.registerKeyBinding(rideOnToggle);
+        ClientRegistry.registerKeyBinding(ClientHandler.rideOnToggle);
     }
 
 }

@@ -20,8 +20,6 @@ public class Config {
     public static ConfigValue<List<String>> RideOnWhiteList;
     public static ConfigValue<List<String>> RideControlBlackList;
     public static ConfigValue<List<String>> RideControlWhiteList;
-    public static ConfigValue<Float> maxHP;
-    public static ConfigValue<Float> minHP;
 
     public static void init() {
         Pair<ConfigLoder, ForgeConfigSpec> server_config = new ForgeConfigSpec.Builder().configure(ConfigLoder::new);
@@ -61,8 +59,6 @@ public class Config {
             RideControlBlackList = builder.define("Control Black List", rcbl);
             List<String> rcwl = new ArrayList<>();
             RideControlWhiteList = builder.define("Control White List", rcwl);
-            maxHP = builder.define("Can Riding Max HP", 500f);
-            minHP = builder.define("Can Riding Min HP", 0f);
             builder.pop();
         }
     }

@@ -44,15 +44,8 @@ public class ServerHandler {
             boolean flag6 = !Config.CanNoBossRide.get() || e.getTarget().isNonBoss();
             boolean flag7 = !Config.CanNoDragonRide.get() || !(e.getTarget() instanceof EnderDragonEntity);
 
-            boolean flag8 = true;
-            boolean flag9 = true;
 
-            if (e.getTarget() instanceof LivingEntity) {
-                flag8 = !(Config.maxHP.get() <= ((LivingEntity) e.getTarget()).getHealth());
-                flag9 = !(Config.minHP.get() >= ((LivingEntity) e.getTarget()).getHealth());
-            }
-
-            if (flag9 && flag8 && flag7 && flag6 && (flag4 || flag5) && flag3 && (flag1 || flag2) && isRideOnActive((ServerPlayerEntity) e.getPlayer())) {
+            if (flag7 && flag6 && (flag4 || flag5) && flag3 && (flag1 || flag2) && isRideOnActive((ServerPlayerEntity) e.getPlayer())) {
                 e.setCanceled(true);
                 e.getPlayer().startRiding(e.getTarget());
                 e.setCancellationResult(ActionResultType.func_233537_a_(e.getPlayer().world.isRemote));
@@ -79,8 +72,10 @@ public class ServerHandler {
         if (e.player.getRidingEntity() != null && e.player.getRidingEntity() instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) e.player.getRidingEntity();
             if (e.player.world.isRemote) {
-                if (((ClientPlayerEntity) e.player).movementInput.jump)
-                    PacketHandler.INSTANCE.sendToServer(new RideOnKeyMessage(RideOnKeyMessage.KeyTyapes.JUMP));
+                if (e.player instanceof ClientPlayerEntity) {
+                    if (((ClientPlayerEntity) e.player).movementInput.jump)
+                        PacketHandler.INSTANCE.sendToServer(new RideOnKeyMessage(RideOnKeyMessage.KeyTyapes.JUMP));
+                }
             } else {
                 boolean flag1 = !Config.RideControlBlackList.get().contains(entity.getType().getRegistryName().toString());
                 boolean flag2 = Config.RideControlWhiteList.get().isEmpty();
@@ -93,10 +88,8 @@ public class ServerHandler {
                 }
 
                 boolean flage1 = Config.GetOffIfDead.get() && !entity.isAlive();
-                boolean flage2 = Config.maxHP.get() <= entity.getHealth();
-                boolean flage3 = Config.minHP.get() >= entity.getHealth();
 
-                if (flage1 || flage2 || flage3)
+                if (flage1)
                     e.player.stopRiding();
 
             }

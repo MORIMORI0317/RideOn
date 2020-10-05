@@ -10,7 +10,7 @@ public class RideOnKeyMessage {
     }
 
     public static RideOnKeyMessage decodeMessege(PacketBuffer buffer) {
-        return new RideOnKeyMessage(KeyTyapes.valueOf(buffer.readString()));
+        return new RideOnKeyMessage(KeyTyapes.valueOf(buffer.readString(32767)));
     }
 
     public static void encodeMessege(RideOnKeyMessage messegeIn, PacketBuffer buffer) {
